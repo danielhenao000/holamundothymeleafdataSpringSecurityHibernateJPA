@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+</head>
+<body>
+    <h1>Inicio, Hola <span th:text="${username}"></span></h1>
+    <header th:replace="layout/plantilla :: header"></header>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/agregar}">[[#{persona.crear}]]</a>
+    <div th:if="${personas != null and !personas.empty} ">
+    <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Celular</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+        <tr th:each="pers : ${personas}">
+            <td><span th:text="${pers.getNombre()}">Mostrar Nombre</span></td>
+            <td><span th:text="${pers.getApellido()}">Mostrar Apellido</span></td>
+            <td><span th:text="${pers.getCorreo()}">Mostrar Correo</span></td>
+            <td><span th:text="${pers.getCelular()}">Mostrar Celular</span></td>
+            <td><a th:href="@{/editar/} + ${pers.id}" th:text="Editar"></a></td>
+            <td><a th:href="@{/eliminar(id=${pers.id})}" th:text="Eliminar"></a></td>
+        </tr>
+    </table>
+    </div>
+
+    <div th:if="${personas == null and personas.empty}">
+        La lista esta Vacía
+    </div>
+    <footer th:replace="layout/plantilla :: footer"></footer>
+
+</body>
+</html>
